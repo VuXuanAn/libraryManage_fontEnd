@@ -1,0 +1,9 @@
+.detailBook {
+    width: 100%;
+}
+.detailBook > div > img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}

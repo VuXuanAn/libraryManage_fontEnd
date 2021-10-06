@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -11,6 +7,11 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+.test {
+  background-color: red;
+  width: 100%;
+  height: 100vh;
 }
 
 .App-header {

@@ -1,0 +1,9 @@
+.inputGroup > input {
+    margin-top: 20px;
+}
+.inputGroup > input:first-child {
+    margin-top: 0px !important;
+}
+.listPublisingManage > p {
+    margin-top: 30px;
+}
