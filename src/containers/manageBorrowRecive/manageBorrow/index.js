@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import Layout from '../../../components/Layout'
 import './style.css'
-import { Button, Input, Form, InputNumber, Modal, Descriptions, message } from 'antd';
-import { useSelector } from 'react-redux';
+import { Button, Input, Form, InputNumber, Modal, message, Collapse, Table, Popconfirm } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { createNewTicket, returnBook } from '../../../actions/ticketBorrowed.action';
+const { Panel } = Collapse;
 const Index = () => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
+    const dispatch = useDispatch()
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -35,8 +35,11 @@ const Index = () => {
         }
     }
     const [ticketBorrowed, setticketBorrowed] = useState({});
+    const [ticketServe, setticketServe] = useState({});
     const onFinish = async (value) => {
+
         const { idBook, idUser, quantity, saleCode } = value;
+
         const user2 = await renderNameById(idUser)
 
         const book = await renderBookById(idBook).name;
@@ -56,81 +59,168 @@ const Index = () => {
                 book,
                 user,
                 quantity,
-                saleCode,
                 today,
                 tomorrow
             }
+            const bookServe = {
+                idBook,
+                idUser,
+                quantity,
+                today,
+                tomorrow
+            }
+            setticketServe(bookServe)
             setticketBorrowed(ticketBorrowed)
             setIsModalVisible(true)
         }
 
     }
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+        dispatch(createNewTicket(ticketServe))
+    };
+
+    const tickets = useSelector(state => state.tickets)
+
+    const columns = [
+        {
+            title: 'Đọc giả',
+            dataIndex: 'idUser',
+            key: 'idUser',
+            render: idUser => {
+                return <p>{idUser.lastName + " " + idUser.firstName}</p>
+            }
+        },
+        {
+            title: 'Sách',
+            dataIndex: 'idBook',
+            key: 'idBook',
+            render: idBook => {
+                return <p>{idBook.name}</p>
+            }
+        },
+        {
+            title: 'Số lượng',
+            dataIndex: 'quantity',
+            key: 'quantity'
+        },
+        {
+            title: 'Tình trạng',
+            dataIndex: 'isReturn',
+            key: 'isReturn',
+            render: (text, record) => {
+                return record.isReturn === true ? <p>đã trả</p> :
+                    <Popconfirm
+                        title="Bạn chắc chắn muốn trả "
+                        onConfirm={() => confirmReturn(record._id)}
+                        onCancel={cancel}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="primary"  >Đang mượn</Button>
+                    </Popconfirm>
+
+            }
+        },
+        {
+            title: 'Xóa',
+            key: '_id',
+            dataIndex: '_id',
+            render: _id =>
+                <Popconfirm
+                    title="Are you sure to delete this task?"
+                    onConfirm={() => confirmDelete(_id)}
+                    onCancel={cancel}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <a href="#">Delete</a>
+                </Popconfirm>,
+        }
+    ];
+    const confirmDelete = (id) => {
+        alert(id)
+    }
+    const confirmReturn = (id) => {
+        dispatch(returnBook(id))
+    }
+    const cancel = () => {
+
+    }
     return (
         <Layout>
-            <Form
-                className="formBorrowed"
-                name="basic"
-                wrapperCol={{ span: 24 }}
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                autoComplete="off"
-            >
-                <Form.Item
-                    name="idUser"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
+            <div style={{ padding: '50px', width: '100%' }}>
+                <div >
+                    <Collapse style={{ width: '100%' }}  >
+                        <Panel header="Thêm phiếu mượn" key="1">
+                            <Form
+                                className="formBorrowed"
+                                name="basic"
+                                wrapperCol={{ span: 24 }}
+                                initialValues={{ remember: true }}
+                                onFinish={onFinish}
+                                autoComplete="off"
+                            >
+                                <Form.Item
+                                    name="idUser"
+                                    rules={[{ required: true, message: 'Vui lòng nhập id đọc giả' }]}
+                                >
+                                    <Input placeholder="ID người muợn" />
+                                </Form.Item>
+                                <Form.Item
+                                    name="idBook"
+                                    rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
+                                >
+                                    <Input placeholder="ID sách" />
+                                </Form.Item>
+                                <Form.Item
+                                    name="quantity"
+                                    rules={[{ required: true, message: 'Vui lòng nhập số lượng' }]}
+                                >
+                                    <InputNumber min={1} max={50} placeholder="số lượng" style={{ width: '100%!important' }} />
+                                </Form.Item>
+
+                                <i>thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
+                                <Form.Item wrapperCol={{ span: 24 }} >
+                                    <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
+                                        mượn
+                                    </Button>
+                                    <Button type="primary" style={{ float: 'right' }}>
+                                        reset
+                                    </Button>
+                                </Form.Item>
+
+                            </Form>
+                        </Panel>
+
+                    </Collapse>
+                </div>
+
+
+                <Modal
+                    title="Thông tin phiếu mượn"
+                    visible={isModalVisible}
+                    width={400}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
                 >
-                    <Input placeholder="ID người muợn" />
-                </Form.Item>
-                <Form.Item
-                    name="idBook"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
-                >
-                    <Input placeholder="ID sách" />
-                </Form.Item>
-                <Form.Item
-                    name="quantity"
-                    rules={[{ required: true, message: 'Vui lòng nhập giá sách' }]}
-                >
-                    <InputNumber min={1} max={50} placeholder="giá" style={{ width: '100 %' }} />
-                </Form.Item>
-                <Form.Item
-                    name="saleCode"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
-                >
-                    <Input placeholder="mã mượn không thời hạn" />
-                </Form.Item>
-                <i>thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
-                <Form.Item wrapperCol={{ span: 24 }} >
-                    <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
-                        mượn
-                    </Button>
-                    <Button type="primary" style={{ float: 'right' }}>
-                        reset
-                    </Button>
-                </Form.Item>
+                    {JSON.stringify(ticketBorrowed) === '{}' ? null :
+                        <div>
+                            <p>Nguời mượn: {ticketBorrowed.user}  </p>
+                            <p>Tên sách: {ticketBorrowed.book} </p>
+                            <p>Số lượng: {ticketBorrowed.quantity}</p>
+                            <p>Mã code: {ticketBorrowed.saleCode}</p>
+                            <p>Ngày mượn: {ticketBorrowed.today.getDate() + "-" + ticketBorrowed.today.getMonth() + "-" + ticketBorrowed.today.getFullYear()} </p>
+                            <p>Ngày trả: {ticketBorrowed.tomorrow.getDate() + "-" + ticketBorrowed.tomorrow.getMonth() + "-" + ticketBorrowed.tomorrow.getFullYear()}  </p>
 
-            </Form>
-
-            <Modal
-                title="Thông tin phiếu mượn"
-                visible={isModalVisible}
-                width={400}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                {JSON.stringify(ticketBorrowed) === '{}' ? null :
-                    <div>
-                        <p>Nguời mượn: {ticketBorrowed.user}  </p>
-                        <p>Tên sách: {ticketBorrowed.book} </p>
-                        <p>Số lượng: {ticketBorrowed.quantity}</p>
-                        <p>Mã code: {ticketBorrowed.saleCode}</p>
-                        <p>Ngày mượn: {ticketBorrowed.today.getDate() + "-" + ticketBorrowed.today.getMonth() + "-" + ticketBorrowed.today.getFullYear()} </p>
-                        <p>Ngày trả: {ticketBorrowed.tomorrow.getDate() + "-" + ticketBorrowed.tomorrow.getMonth() + "-" + ticketBorrowed.tomorrow.getFullYear()}  </p>
-
-                    </div>}
-
-            </Modal>
-
+                        </div>}
+                </Modal>
+                <div style={{ marginTop: '50px' }}>
+                    <p>danh sách phiếu mượn</p>
+                    {tickets.tickets ? <Table columns={columns} dataSource={tickets.tickets} style={{ width: '100%!important' }} /> : null}
+                </div>
+            </div>
         </Layout>
     );
 }

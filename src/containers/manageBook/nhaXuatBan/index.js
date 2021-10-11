@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css'
 import { Modal, Button, Input, Popconfirm, Form, } from 'antd';
 import {
@@ -99,6 +99,10 @@ const NXB = () => {
         }
         dispatch(addProduct(nxb))
     }
+    // const auth = useSelector(state => state.auth)
+    // // useEffect(() => {
+    // //     dispatch(getInitialData());
+    // // }, [auth.authenticate]);
 
     return (
         <Layout>

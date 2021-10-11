@@ -11,7 +11,8 @@ import { generatePublicUrl } from '../../../urlConfig';
 const { Option } = Select;
 const { TextArea } = Input;
 const Index = () => {
-
+    const [detailBookStatus, setdetailBookStatus] = useState(false);
+    const [bookImage, setbookImage] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const dispatch = useDispatch()
     const showModal = () => {
@@ -19,8 +20,8 @@ const Index = () => {
     };
 
     const books = useSelector(state => state.book)
+    const categories = useSelector(state => state.categories)
     const handleOk = () => {
-
         setIsModalVisible(false);
     };
 
@@ -31,6 +32,14 @@ const Index = () => {
     const listNxb = []
     for (let category of nxb.nxb) {
         listNxb.push({ value: category._id, name: category.name });
+    }
+    const listCategory = []
+
+    for (let category of categories.categories) {
+        listCategory.push({
+            value: category._id,
+            name: category.name
+        })
     }
 
 
@@ -51,6 +60,14 @@ const Index = () => {
             key: 'nxb',
             render: nxb => {
                 return <p>{nxb.name}</p>
+            }
+        },
+        {
+            title: 'Thể loại',
+            dataIndex: 'category',
+            key: 'category',
+            render: category => {
+                return <p>{category.name}</p>
             }
         },
         {
@@ -79,8 +96,6 @@ const Index = () => {
     const seeDetailBook = async (record) => {
         setdetailBookStatus(true)
         await setbook(record)
-        console.log(book);
-
     }
 
 
@@ -97,47 +112,26 @@ const Index = () => {
 
 
     // all component about file 
-    const onPreview = async file => {
-        let src = file.url;
-        if (!src) {
-            src = await new Promise(resolve => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file.originFileObj);
-                reader.onload = () => resolve(reader.result);
-            });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow.document.write(image.outerHTML);
-    };
-
-    const [fileList, setFileList] = useState([]);
-
-    const onChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-    };
 
 
     const onFinish = (value) => {
-        if (fileList[0] === '') {
-            message.warning('Vui lòng nhập hình ảnh');
-        }
-        const { name, price, stock, descreption, nxb } = value
+
+        const { name, price, stock, descreption, nxb, category } = value
         const form = new FormData();
         form.append('name', name)
         form.append('price', price)
         form.append('stock', stock)
         form.append('descreption', descreption)
         form.append('nxb', nxb)
-        form.append('pictureBook ', fileList[0])
+        form.append('category', category)
+        form.append('pictureBook', bookImage)
         dispatch(createBook(form))
     }
 
-    //detail book
-    const [detailBookStatus, setdetailBookStatus] = useState(false);
 
-
+    const handleCategoryImage = (e) => {
+        setbookImage(e.target.files[0]);
+    }
     return (
         <Layout>
             <div style={{ padding: '50px', width: '100%' }}>
@@ -182,10 +176,21 @@ const Index = () => {
 
                             <Form.Item
                                 name="nxb"
-                                rules={[{ required: true, message: 'Vui lòng nhập nhaf xuaast ban' }]}
+                                rules={[{ required: true, message: 'Vui lòng nhập nhà xuất bản' }]}
                             >
                                 <Select placeholder="Nhà xuất bản">
                                     {listNxb.map(nxb => {
+                                        return <Option key={nxb.value} value={nxb.value}>{nxb.name}</Option>
+                                    })}
+
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                name="category"
+                                rules={[{ required: true, message: 'Vui lòng nhập thể loại' }]}
+                            >
+                                <Select placeholder="Thể loại">
+                                    {listCategory.map(nxb => {
                                         return <Option key={nxb.value} value={nxb.value}>{nxb.name}</Option>
                                     })}
 
@@ -199,20 +204,15 @@ const Index = () => {
 
                             </Form.Item>
 
-                            <ImgCrop rotate>
-                                <Upload
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                    listType="picture-card"
-                                    fileList={fileList}
-                                    onChange={onChange}
-                                    onPreview={onPreview}
-                                >
-                                    {fileList.length < 1 && '+ Upload'}
-                                </Upload>
-                            </ImgCrop>
+                            <Form.Item
+                                name="pictureBook"
+                                rules={[{ required: true, message: 'Vui lòng nhập mô tả về sách' }]}
+                            >
+                                <input type="file" onChange={handleCategoryImage} />
+                            </Form.Item>
                             <Form.Item wrapperCol={{ span: 24 }} >
                                 <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
-                                    Thêm nhà xuất bản
+                                    Tạo sách mới
                                 </Button>
                                 <Button type="primary" style={{ float: 'right' }}>
                                     Hủy
@@ -237,10 +237,11 @@ const Index = () => {
                                         <img src={generatePublicUrl(book.pictureBook)} />
                                         <p>Tên sách: {book.name}</p>
                                         <p>Nhà xuất bản:{book.nxb.name}</p>
+                                        <p>Thể loại:{book.category.name}</p>
                                         <p>Giá: {book.price} VNĐ</p>
                                         <p>Số lượng: {book.stock} cuốn</p>
-                                        <p>Đã thuê: {book.borrowed} cuốn</p>
-                                        <p>Còn: {book.stock - book.borrowed} cuốn</p>
+                                        <p>Đã thuê: {book.borrowed ? book.borrowed : 0} cuốn</p>
+                                        <p>Còn: {book.stock - (book.borrowed ? book.borrowed : 0)} cuốn</p>
                                         <p>Mô tả: {book.descreption}</p>
                                     </div>
                             }

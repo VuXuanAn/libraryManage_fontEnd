@@ -1,5 +1,6 @@
 import { authConstants } from "./constants";
 import axios from "../helpers/axios";
+import { getInitialData } from "./initialData.action";
 
 export const login = (user) => {
 
@@ -15,7 +16,7 @@ export const login = (user) => {
             const { token, user } = res.data;
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
-            dispatch({
+            await dispatch({
                 type: authConstants.LOGIN_SUCCESS,
                 payload: {
                     token, user
@@ -30,6 +31,15 @@ export const login = (user) => {
             }
         }
     }
+}
+
+export const signOut = () => (dispatch) => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    dispatch({
+        type: authConstants.LOGOUT_SUCCESS
+    });
+
 }
 
 export const isUserLoggedIn = () => {

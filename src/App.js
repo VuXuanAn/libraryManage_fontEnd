@@ -11,13 +11,15 @@ import PrivateRoute from './components/HOC/PrivateRoute';
 import { getInitialData } from './actions/initialData.action';
 import UserManage from './containers/manageUser'
 import manageBorrowed from './containers/manageBorrowRecive/manageBorrow'
+import HomePage from './containers/homePage'
+import Category from './containers/manageBook/category'
+import Blog from './containers/blog'
 function App() {
 
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth)
-  const nxb = useSelector(state => state.nxb)
-  console.log(nxb);
-  console.log(auth);
+
+
   useEffect(() => {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
@@ -25,17 +27,21 @@ function App() {
     if (auth.authenticate) {
       dispatch(getInitialData());
     }
-    console.log();
-
   }, [auth.authenticate]);
+
 
   return (
     <div className="App">
       <Switch>
         <PrivateRoute exact path="/nha-xuat-ban" component={NXB} />
+        <PrivateRoute exact path="/" component={HomePage} />
         <PrivateRoute exact path="/dau-sach" component={Book} />
         <PrivateRoute exact path="/quan-li-doc-gia" component={UserManage} />
+        <PrivateRoute exact path="/quan-li-blog" component={Blog} />
         <PrivateRoute exact path="/quan-li-muon" component={manageBorrowed} />
+        <PrivateRoute exact path="/the-loai" component={Category} />
+
+
         <Route path="/signin" component={SignIn} />
       </Switch>
     </div>
