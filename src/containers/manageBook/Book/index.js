@@ -89,7 +89,7 @@ const Index = () => {
             title: 'Sửa',
             key: ' detail',
             dataIndex: 'Detail',
-            render: (text, record) => <a onClick={() => seeDetailBook(record)}>xem chi tiet</a>
+            render: (text, record) => <a onClick={() => seeDetailBook(record)}>Xem chi tiet</a>
         },
     ];
     const [book, setbook] = useState({});

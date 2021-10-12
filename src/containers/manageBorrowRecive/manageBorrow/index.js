@@ -181,7 +181,7 @@ const Index = () => {
                                     <InputNumber min={1} max={50} placeholder="số lượng" style={{ width: '100%!important' }} />
                                 </Form.Item>
 
-                                <i>thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
+                                <i>Thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
                                 <Form.Item wrapperCol={{ span: 24 }} >
                                     <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
                                         mượn
@@ -217,7 +217,7 @@ const Index = () => {
                         </div>}
                 </Modal>
                 <div style={{ marginTop: '50px' }}>
-                    <p>danh sách phiếu mượn</p>
+                    <p>Danh sách phiếu mượn</p>
                     {tickets.tickets ? <Table columns={columns} dataSource={tickets.tickets} style={{ width: '100%!important' }} /> : null}
                 </div>
             </div>
