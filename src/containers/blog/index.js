@@ -83,7 +83,7 @@ const Index = () => {
 
                         <Form.Item wrapperCol={{ span: 24 }} >
                             <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
-                                Thêm bài viết 1
+                                Thêm bài viết
                             </Button>
                             <Button type="primary" style={{ float: 'right' }}>
                                 Hủy
