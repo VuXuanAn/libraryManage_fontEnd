@@ -1,18 +1,17 @@
-import { bookConstant } from "../actions/constants";
+import { medical } from "../actions/constants";
 
 const initialState = {
-    book: []
+    profiles: []
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case bookConstant.GET_ALL_BOOK_SUCCESS:
+        case medical.GET_ALL_PROFILE_SUCCESS:
             state = {
                 ...state,
-                book: action.payload.book
+                profiles: action.payload.profiles
             }
             break;
-
     }
 
     return state;

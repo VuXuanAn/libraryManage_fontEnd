@@ -1,7 +1,7 @@
 import { Button, Input, Form, Modal, Upload, Card } from 'antd';
 import React, { useState } from 'react';
 import Layout from '../../components/Layout'
-import { FileAddOutlined, SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { FileAddOutlined, SettingOutlined, EditOutlined, EllipsisOutlined, ContainerOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBlog } from '../../actions/blog.action';
 import Meta from 'antd/lib/card/Meta';
@@ -38,7 +38,7 @@ const Index = () => {
     }
     const blogs = useSelector(state => state.blogs)
     return (
-        <Layout>
+        <Layout icon={<ContainerOutlined className='iconOfItem' />} title={'Blog'}>
             <div style={{ padding: '50px', width: '100%' }}>
                 <Button icon={<FileAddOutlined />} onClick={showModal}>Thêm bài viết</Button>
 
@@ -103,6 +103,7 @@ const Index = () => {
                                     <img
                                         alt="example"
                                         src={generatePublicUrl(blog.pictureBlog)}
+                                        style={{ height: '170px' }}
                                     />
                                 }
                                 actions={[

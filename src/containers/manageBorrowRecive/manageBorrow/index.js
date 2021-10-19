@@ -4,10 +4,12 @@ import './style.css'
 import { Button, Input, Form, InputNumber, Modal, message, Collapse, Table, Popconfirm } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createNewTicket, returnBook } from '../../../actions/ticketBorrowed.action';
+import { ContainerOutlined } from '@ant-design/icons';
 const { Panel } = Collapse;
 const Index = () => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [modalTicket, setmodalTicket] = useState(false);
     const dispatch = useDispatch()
 
     const handleCancel = () => {
@@ -36,10 +38,10 @@ const Index = () => {
     }
     const [ticketBorrowed, setticketBorrowed] = useState({});
     const [ticketServe, setticketServe] = useState({});
+
+
     const onFinish = async (value) => {
-
         const { idBook, idUser, quantity, saleCode } = value;
-
         const user2 = await renderNameById(idUser)
 
         const book = await renderBookById(idBook).name;
@@ -75,11 +77,21 @@ const Index = () => {
         }
 
     }
-
+    const showModalTicket = () => {
+        setmodalTicket(true)
+    }
     const handleOk = () => {
         setIsModalVisible(false);
         dispatch(createNewTicket(ticketServe))
     };
+    const handleOkTicket = async () => {
+        await setmodalTicket(false);
+        await setIsModalVisible(true);
+    };
+    const handleCancelTicket = () => {
+        setmodalTicket(false);
+    };
+
 
     const tickets = useSelector(state => state.tickets)
 
@@ -149,53 +161,58 @@ const Index = () => {
 
     }
     return (
-        <Layout>
-            <div style={{ padding: '50px', width: '100%' }}>
-                <div >
-                    <Collapse style={{ width: '100%' }}  >
-                        <Panel header="Thêm phiếu mượn" key="1">
-                            <Form
-                                className="formBorrowed"
-                                name="basic"
-                                wrapperCol={{ span: 24 }}
-                                initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                autoComplete="off"
-                            >
-                                <Form.Item
-                                    name="idUser"
-                                    rules={[{ required: true, message: 'Vui lòng nhập id đọc giả' }]}
-                                >
-                                    <Input placeholder="ID người muợn" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="idBook"
-                                    rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
-                                >
-                                    <Input placeholder="ID sách" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="quantity"
-                                    rules={[{ required: true, message: 'Vui lòng nhập số lượng' }]}
-                                >
-                                    <InputNumber min={1} max={50} placeholder="số lượng" style={{ width: '100%!important' }} />
-                                </Form.Item>
+        <Layout icon={<ContainerOutlined className='iconOfItem' />} title={'Mượn trả'}>
+            <div >
+                <Button type="primary" onClick={showModalTicket} >
+                    tạo phiếu mượn
+                </Button>
 
-                                <i>thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
-                                <Form.Item wrapperCol={{ span: 24 }} >
-                                    <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
-                                        mượn
-                                    </Button>
-                                    <Button type="primary" style={{ float: 'right' }}>
-                                        reset
-                                    </Button>
-                                </Form.Item>
+                <Modal
+                    title="Tạo phiếu mượn"
+                    visible={modalTicket}
+                    width={400}
+                    footer={false}
+                    onOk={handleOkTicket}
+                    onCancel={handleCancelTicket}
+                >
+                    <Form
+                        className="formBorrowed"
+                        name="basic"
+                        onFinish={onFinish}
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            name="idUser"
+                            rules={[{ required: true, message: 'Vui lòng nhập id đọc giả' }]}
+                        >
+                            <Input placeholder="ID người muợn" />
+                        </Form.Item>
+                        <Form.Item
+                            name="idBook"
+                            rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
+                        >
+                            <Input placeholder="ID sách" />
+                        </Form.Item>
+                        <Form.Item
+                            name="quantity"
+                            rules={[{ required: true, message: 'Vui lòng nhập số lượng' }]}
+                        >
+                            <InputNumber min={1} max={50} placeholder="số lượng" style={{ width: '100%!important' }} />
+                        </Form.Item>
 
-                            </Form>
-                        </Panel>
+                        <i>thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
+                        <Form.Item wrapperCol={{ span: 24 }} >
+                            <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
+                                mượn
+                            </Button>
+                            <Button type="primary" style={{ float: 'right' }}>
+                                reset
+                            </Button>
+                        </Form.Item>
 
-                    </Collapse>
-                </div>
+                    </Form>
+                </Modal>
+
 
 
                 <Modal

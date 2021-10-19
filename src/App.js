@@ -14,6 +14,9 @@ import manageBorrowed from './containers/manageBorrowRecive/manageBorrow'
 import HomePage from './containers/homePage'
 import Category from './containers/manageBook/category'
 import Blog from './containers/blog'
+import Event from './containers/event'
+import Profile from './containers/ProfileMedical'
+import Patient from './containers/Patient'
 function App() {
 
   const dispatch = useDispatch();
@@ -33,14 +36,16 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <PrivateRoute exact path="/nha-xuat-ban" component={NXB} />
-        <PrivateRoute exact path="/" component={HomePage} />
-        <PrivateRoute exact path="/dau-sach" component={Book} />
-        <PrivateRoute exact path="/quan-li-doc-gia" component={UserManage} />
-        <PrivateRoute exact path="/quan-li-blog" component={Blog} />
-        <PrivateRoute exact path="/quan-li-muon" component={manageBorrowed} />
-        <PrivateRoute exact path="/the-loai" component={Category} />
 
+        <PrivateRoute exact path="/" component={Profile} />
+        <PrivateRoute path="/nha-xuat-ban" component={NXB} />
+        <PrivateRoute path="/dau-sach" component={Book} />
+        <PrivateRoute path="/quan-li-doc-gia" component={UserManage} />
+        <PrivateRoute path="/quan-li-blog" component={Blog} />
+        <PrivateRoute path="/quan-li-muon" component={manageBorrowed} />
+        <PrivateRoute path="/the-loai" component={Category} />
+        <PrivateRoute path="/su-kien" component={Event} />
+        <PrivateRoute path="/medical/patient" component={Patient} />
 
         <Route path="/signin" component={SignIn} />
       </Switch>

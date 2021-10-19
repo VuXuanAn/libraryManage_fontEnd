@@ -1,0 +1,19 @@
+.figures {
+    height: 600px;
+    padding-left: 8px;
+    background-image: url("./../../image/db2.jfif");
+    padding-right: 8px;
+    background-size: cover;
+}
+.sumary {
+    background: #fff;
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-row-gap: 40px;
+    row-gap: 40px;
+    padding: 30px 70px;
+    position: absolute;
+    bottom: 15px;
+    width: 92%;
+}

@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './style.css'
 import { Modal, Button, Input, Popconfirm, Form, } from 'antd';
 import {
-    UserAddOutlined
+    UserAddOutlined,
+    SnippetsOutlined,
+    DeleteOutlined,
+    EditOutlined
 } from '@ant-design/icons';
 import Layout from '../../../components/Layout'
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,35 +53,24 @@ const NXB = () => {
             dataIndex: 'email',
         },
         {
-            title: 'Xóa',
+            title: 'Action',
             key: '_id',
             dataIndex: '_id',
             render: _id =>
-                <Popconfirm
-                    title="Are you sure to delete this task?"
-                    onConfirm={() => confirmDelete(_id)}
-                    onCancel={cancel}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <a href="#">Delete</a>
-                </Popconfirm>,
-        },
-        {
-            title: 'Sửa',
-            key: '_id',
-            dataIndex: '_id',
-            render: _id =>
-                <Popconfirm
-                    title="Are you sure to delete this task?"
-                    onConfirm={() => confirmDelete(_id)}
-                    onCancel={cancel}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <a href="#">Edit</a>
-                </Popconfirm>,
-        },
+                <div>
+                    <Popconfirm
+                        title="Are you sure to delete this task?"
+                        onConfirm={() => confirmDelete(_id)}
+                        onCancel={cancel}
+                        okText="Yes"
+                        cancelText="No"
+
+                    >
+                        <DeleteOutlined style={{ marginRight: '20px', color: 'red' }} />
+                    </Popconfirm>
+                    <EditOutlined style={{ color: 'green' }} />
+                </div>
+        }
     ];
 
 
@@ -99,14 +91,11 @@ const NXB = () => {
         }
         dispatch(addProduct(nxb))
     }
-    // const auth = useSelector(state => state.auth)
-    // // useEffect(() => {
-    // //     dispatch(getInitialData());
-    // // }, [auth.authenticate]);
+
 
     return (
-        <Layout>
-            <div style={{ padding: '50px', width: '100%' }}>
+        <Layout icon={<SnippetsOutlined className='iconOfItem' />} title={'Nhà xuất bản'}>
+            <div >
                 <div>
                     <Button type="primary" onClick={showModal} icon={<UserAddOutlined />} >
                         Thêm nhà xuất bản

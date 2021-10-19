@@ -4,7 +4,8 @@ import {
     authConstants,
     ticketBorrowedConstant,
     categoryConstants,
-    blogConstants
+    blogConstants,
+    medical
 } from "./constants";
 import axios from "../helpers/axios";
 
@@ -12,7 +13,7 @@ export const getInitialData = () => {
     return async (dispatch) => {
         const res = await axios.post(`/initialData`);
         if (res.status === 200) {
-            const { nxb, book, users, tickets, categories, blogs } = res.data;
+            const { nxb, book, users, tickets, categories, blogs, profiles } = res.data;
             dispatch({
                 type: nxbConstant.GET_NXB_SUCCESS,
                 payload: { nxb },
@@ -36,6 +37,10 @@ export const getInitialData = () => {
             dispatch({
                 type: blogConstants.GET_ALL_BLOG_SUCCESS,
                 payload: { blogs }
+            })
+            dispatch({
+                type: medical.GET_ALL_PROFILE_SUCCESS,
+                payload: { profiles }
             })
         }
         console.log(res);

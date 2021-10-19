@@ -46,22 +46,18 @@ const Layout = (props) => {
                     <Menu.Item key="1" icon={<HomeOutlined />}>
                         <NavLink exact to={`/`}>Trang chủ</NavLink>
                     </Menu.Item>
-                    <SubMenu key="sub1" icon={<DatabaseOutlined />} title="Quản lí tài liệu">
-                        <Menu.Item key="2"><NavLink to={`/nha-xuat-ban`}>Nhà xuất bản</NavLink></Menu.Item>
-                        <Menu.Item key="3"><NavLink to={`/the-loai`}>Thể loại</NavLink></Menu.Item>
-                        <Menu.Item key="4"><NavLink to={`/dau-sach`}>Đầu sách</NavLink></Menu.Item>
-                    </SubMenu>
+
                     <Menu.Item key="5" icon={<UserOutlined />}>
-                        <NavLink to={`/quan-li-doc-gia`}>Quản lí đọc giả</NavLink>
+                        <NavLink to={`/`}>Quản lí hồ sơ bệnh ánh</NavLink>
                     </Menu.Item>
                     <Menu.Item key="6" icon={<TransactionOutlined />}>
-                        <NavLink to={`/quan-li-muon`} >Quản lí mượn</NavLink>
+                        <NavLink to={`/medical/patient`} >Quản lí thông tin bệnh nhân</NavLink>
                     </Menu.Item>
                     <Menu.Item key="7" icon={<ContainerOutlined />}>
-                        <NavLink to={`/quan-li-blog`}>Blog</NavLink>
+                        <NavLink to={`/medical/assurance`}>Quản lí bảo hiểm</NavLink>
                     </Menu.Item>
                     <Menu.Item key="8" icon={<GiftOutlined />}>
-                        <NavLink to={`/su-kien`}>Sự kiện</NavLink>
+                        <NavLink to={`/medical/profile`}>Thống kê báo cáo </NavLink>
                     </Menu.Item>
                     <Menu.Item key="9" icon={<LogoutOutlined />} onClick={logoutHandler}>
                         Đăng xuất

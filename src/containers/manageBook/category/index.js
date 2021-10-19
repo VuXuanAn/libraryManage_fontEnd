@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCategory } from '../../../actions/category.action';
 import Layout from '../../../components/Layout'
-
+import { UnorderedListOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const originData = [];
 
@@ -114,49 +114,24 @@ const Index = () => {
             editable: true,
         },
         {
-            title: 'operation',
-            dataIndex: 'operation',
-            render: (_, record) => {
-                const editable = isEditing(record);
-                return editable ? (
-                    <span>
-                        <a
-                            href="javascript:;"
-                            onClick={() => save(record.name)}
-                            style={{
-                                marginRight: 8,
-                            }}
-                        >
-                            Save
-                        </a>
-                        <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                            <a>Cancel</a>
-                        </Popconfirm>
-                    </span>
-                ) : (
-                    <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-                        Edit
-                    </Typography.Link>
-                );
-            },
-        },
-        {
-            title: 'Xoá',
+            title: 'Action',
+            key: '_id',
             dataIndex: '_id',
-            width: '30%',
-            render: _id => {
-                return (
+            render: _id =>
+                <div>
                     <Popconfirm
-                        title="Bạn chắc chắn muốn xóa thể loại này ?"
+                        title="Are you sure to delete this task?"
                         onConfirm={() => deleteCategory(_id)}
+                        onCancel={cancel}
                         okText="Yes"
                         cancelText="No"
+
                     >
-                        <Button type="primary" danger>Xóa</Button>
+                        <DeleteOutlined style={{ marginRight: '20px', color: 'red' }} />
                     </Popconfirm>
-                )
-            }
-        },
+                    <EditOutlined style={{ color: 'green' }} />
+                </div>
+        }
     ];
     const deleteCategory = (_id) => {
         alert(_id)
@@ -180,8 +155,8 @@ const Index = () => {
 
 
     return (
-        <Layout>
-            <div style={{ padding: '50px', width: '100%' }}>
+        <Layout icon={<UnorderedListOutlined className='iconOfItem' />} title={'Thể loại'}>
+            <div>
                 <Button type="primary" onClick={showModal}  >
                     Thêm thể loại
                 </Button>
@@ -198,18 +173,9 @@ const Index = () => {
                 <ul>
                     <Form form={form} component={false}>
                         <Table
-                            components={{
-                                body: {
-                                    cell: EditableCell,
-                                },
-                            }}
                             bordered
                             dataSource={categories.categories}
                             columns={mergedColumns}
-                            rowClassName="editable-row"
-                            pagination={{
-                                onChange: cancel,
-                            }}
                         />
                     </Form>
                 </ul>

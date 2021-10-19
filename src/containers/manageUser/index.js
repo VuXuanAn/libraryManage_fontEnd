@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Input, Popconfirm, Form, Table } from 'antd';
 import Layout from './../../components/Layout'
 import {
-    UserAddOutlined
+    UserAddOutlined,
+    UserOutlined,
+    DeleteOutlined,
+    EditOutlined
 } from '@ant-design/icons';
 import { addUser } from '../../actions/user.action';
 const Index = () => {
@@ -47,19 +50,23 @@ const Index = () => {
             key: 'email'
         },
         {
-            title: 'Xóa',
+            title: 'Action',
             key: '_id',
             dataIndex: '_id',
             render: _id =>
-                <Popconfirm
-                    title="Are you sure to delete this task?"
-                    onConfirm={() => confirmDelete(_id)}
-                    onCancel={cancel}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <a href="#">Delete</a>
-                </Popconfirm>,
+                <div>
+                    <Popconfirm
+                        title="Are you sure to delete this task?"
+                        onConfirm={() => confirmDelete(_id)}
+                        onCancel={cancel}
+                        okText="Yes"
+                        cancelText="No"
+
+                    >
+                        <DeleteOutlined style={{ marginRight: '20px', color: 'red' }} />
+                    </Popconfirm>
+                    <EditOutlined style={{ color: 'green' }} />
+                </div>
         }
     ];
 
@@ -72,8 +79,8 @@ const Index = () => {
     }
 
     return (
-        <Layout>
-            <div style={{ padding: '50px', width: '100%' }}>
+        <Layout icon={<UserOutlined className='iconOfItem' />} title={'Đọc giả'}>
+            <div>
                 <div>
                     <Button type="primary" onClick={showModal} icon={<UserAddOutlined />} >
                         Thêm đọc giả
