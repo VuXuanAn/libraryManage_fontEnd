@@ -161,7 +161,6 @@ const Index = () => {
 
     }
     return (
-<<<<<<< HEAD
         <Layout icon={<ContainerOutlined className='iconOfItem' />} title={'Mượn trả'}>
             <div >
                 <Button type="primary" onClick={showModalTicket} >
@@ -214,55 +213,6 @@ const Index = () => {
                     </Form>
                 </Modal>
 
-=======
-        <Layout>
-            <div style={{ padding: '50px', width: '100%' }}>
-                <div >
-                    <Collapse style={{ width: '100%' }}  >
-                        <Panel header="Thêm phiếu mượn" key="1">
-                            <Form
-                                className="formBorrowed"
-                                name="basic"
-                                wrapperCol={{ span: 24 }}
-                                initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                autoComplete="off"
-                            >
-                                <Form.Item
-                                    name="idUser"
-                                    rules={[{ required: true, message: 'Vui lòng nhập id đọc giả' }]}
-                                >
-                                    <Input placeholder="ID người muợn" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="idBook"
-                                    rules={[{ required: true, message: 'Vui lòng nhập tên sách' }]}
-                                >
-                                    <Input placeholder="ID sách" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="quantity"
-                                    rules={[{ required: true, message: 'Vui lòng nhập số lượng' }]}
-                                >
-                                    <InputNumber min={1} max={50} placeholder="số lượng" style={{ width: '100%!important' }} />
-                                </Form.Item>
-
-                                <i>Thời gian mượn 14 ngày tính từ ngày mượn, sau 14 ngày tính phí 5000Đ/ngày trả trễ</i>
-                                <Form.Item wrapperCol={{ span: 24 }} >
-                                    <Button type="primary" htmlType="submit" style={{ marginRight: 'auto' }}>
-                                        mượn
-                                    </Button>
-                                    <Button type="primary" style={{ float: 'right' }}>
-                                        reset
-                                    </Button>
-                                </Form.Item>
-
-                            </Form>
-                        </Panel>
-
-                    </Collapse>
-                </div>
->>>>>>> ba41c503e64cb97502e3ce9164c5d3c901cf3876
 
 
                 <Modal

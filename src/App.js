@@ -37,7 +37,7 @@ function App() {
     <div className="App">
       <Switch>
 
-        <PrivateRoute exact path="/" component={Profile} />
+        <PrivateRoute exact path="/" component={HomePage} />
         <PrivateRoute path="/nha-xuat-ban" component={NXB} />
         <PrivateRoute path="/dau-sach" component={Book} />
         <PrivateRoute path="/quan-li-doc-gia" component={UserManage} />

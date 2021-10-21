@@ -65,7 +65,6 @@ const Index = () => {
             }
         },
         {
-<<<<<<< HEAD
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
@@ -76,36 +75,6 @@ const Index = () => {
                         onConfirm={() => confirmDelete(record._id)}
                         okText="Yes"
                         cancelText="No"
-=======
-            title: 'Xóa',
-            key: '_id',
-            dataIndex: '_id',
-            render: _id =>
-                <Popconfirm
-                    title="Are you sure to delete this task?"
-                    onConfirm={() => confirmDelete(_id)}
-                    onCancel={cancel}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <a href="#">Delete</a>
-                </Popconfirm>,
-        },
-        {
-            title: 'Sửa',
-            key: ' detail',
-            dataIndex: 'Detail',
-            render: (text, record) => <a onClick={() => seeDetailBook(record)}>Xem chi tiet</a>
-        },
-    ];
-    const [book, setbook] = useState({});
-    const seeDetailBook = async (record) => {
-        setdetailBookStatus(true)
-        await setbook(record)
-    }
-
-
->>>>>>> ba41c503e64cb97502e3ce9164c5d3c901cf3876
 
                     >
                         <DeleteOutlined style={{ marginRight: '20px', color: 'red' }} />
